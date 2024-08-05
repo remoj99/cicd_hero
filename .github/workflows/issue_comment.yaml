@@ -33,7 +33,7 @@ jobs:
       - name: Create comment with API
         run: | #gh cli or github cli already comes with in all the runner, so we use in insead of curl
           gh api -X POST \
-            http://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER/comments \
+            http://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
             -f body='
             Comment but from the API call not action
             '
