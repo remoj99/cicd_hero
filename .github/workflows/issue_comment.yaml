@@ -1,20 +1,20 @@
 name: Create a comment on new issues
 
-on:
-  issues:
-    types: [opened]
 
-#permissions: write-all
+on: 
+  issues:
+    types: [opened] #run whenever we create a issue
+
 
 jobs:
   comment-with-action:
     runs-on: ubuntu-latest
-    steps:
-      - name: "dump github context"
+    steps: # create commant on that particualr issue
+      - name: "dumpe github context"  #Need ISSUE Id FOR CREATE FOR RTHAT COMMENT
         run: echo '${{ toJSON(github.event) }}' | jq
         shell: bash
       - name: Create comment
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
@@ -24,19 +24,24 @@ jobs:
 
             [1]: https://github.com/peter-evans/create-or-update-comment
           reactions: '+1'
-          
+
+# the action can tap into the rooklit of github and fetch by itself, except the issue number, but github api cannot, it has to do it yourself  
+
   comment-with-api:
     runs-on: ubuntu-latest
     steps:
       - name: Create comment with API
-        run: |
+        run: | #gh cli or github cli already comes with in all the runner, so we use in insead of curl
           gh api -X POST \
             https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
             -f body='
             Comment but from the API call not action
             '
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #WE NEED it otherwise the gh api will not work, the token is generated has a set of presioon on this repo and only for the furation of htisworkflow
           ORGANIZATION: ${{ github.event.organization.login }}
           REPOSITORY: ${{ github.event.repository.name }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
+
+
+
