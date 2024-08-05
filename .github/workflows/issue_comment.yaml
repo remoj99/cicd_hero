@@ -11,5 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps: # create commant on that particualr issue
       - name: "dumpe github context"  #Need ISSUE Id FOR CREATE FOR RTHAT COMMENT
-        run: echo '${ {toJSON(github.event) }}' | jq
+        run: echo '${{ toJSON(github.event) }}' | jq
         shell: bash
