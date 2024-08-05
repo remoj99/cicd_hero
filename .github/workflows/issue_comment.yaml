@@ -1,0 +1,15 @@
+name: Create a comment on new issues
+
+
+on: 
+  issues:
+    types: [opened] #run whenever we create a issue
+
+
+jobs:
+  comment-with-action:
+    runs-on: ubuntu-latest
+    steps: # create commant on that particualr issue
+      - name: "dumpe github context"  #Need ISSUE Id FOR CREATE FOR RTHAT COMMENT
+        run: echo '${ {toJSON(github.event) }}' | jq
+        shell: bash
